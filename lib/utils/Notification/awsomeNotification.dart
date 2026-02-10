@@ -1,10 +1,16 @@
 import 'package:edemand_partner/app/generalImports.dart';
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
+import 'dart:typed_data';
 
 class LocalAwesomeNotification {
   static const String soundNotificationChannel = "soundNotification";
   static const String normalNotificationChannel = "normalNotification";
   static String chatNotificationChannel = "chat_notification";
+  static String bookingNotificationChannel = "booking_notification";
+
+  // Vibration pattern for booking notifications [delay, vibration, delay, vibration]
+  static const List<int> bookingVibrationPattern = [0, 500, 200, 500];
 
   static AwesomeNotifications notification = AwesomeNotifications();
 
@@ -38,6 +44,18 @@ class LocalAwesomeNotification {
         channelDescription: "Notification related to chat",
         vibrationPattern: mediumVibrationPattern,
         importance: NotificationImportance.High,
+      ),
+      NotificationChannel(
+        channelKey: bookingNotificationChannel,
+        channelName: "New Booking Notifications",
+        channelDescription: "Notification for new booking arrivals",
+        importance: NotificationImportance.Max,
+        playSound: true,
+        soundSource: Platform.isIOS
+            ? "order_sound.aiff"
+            : "resource://raw/order_sound",
+        vibrationPattern: Int64List.fromList(bookingVibrationPattern),
+        ledColor: Theme.of(context).colorScheme.lightGreyColor,
       ),
     ], channelGroups: []);
     await setupAwesomeNotificationListeners(context);
@@ -170,6 +188,40 @@ class LocalAwesomeNotification {
           channelKey: soundNotificationChannel,
         ),
       );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Create notification for new booking with vibration
+  Future<void> createBookingNotification({
+    required String title,
+    required String body,
+    required RemoteMessage notificationData,
+    required bool isLocked,
+  }) async {
+    try {
+      // Create notification with booking channel
+      await notification.createNotification(
+        content: NotificationContent(
+          id: Random().nextInt(5000),
+          title: title,
+          locked: isLocked,
+          payload: Map.from(notificationData.data),
+          body: body,
+          color: const Color.fromARGB(255, 79, 54, 244),
+          wakeUpScreen: true,
+          largeIcon: notificationData.data["image"],
+          bigPicture: notificationData.data["image"],
+          notificationLayout: NotificationLayout.BigPicture,
+          channelKey: bookingNotificationChannel,
+        ),
+      );
+
+      // Trigger vibration pattern programmatically for additional feedback
+      if (await Vibration.hasVibrator() ?? false) {
+        await Vibration.vibrate(pattern: bookingVibrationPattern);
+      }
     } catch (e) {
       rethrow;
     }

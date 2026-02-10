@@ -40,6 +40,14 @@ Future<void> onBackgroundMessageHandler(RemoteMessage message) async {
         notificationData: message,
         isLocked: false,
       );
+    } else if (message.data['type'] == "booking" && Platform.isAndroid) {
+      // Handle new booking notification with vibration
+      localNotification.createBookingNotification(
+        title: message.notification?.title ?? 'New Booking',
+        body: message.notification?.body ?? '',
+        notificationData: message,
+        isLocked: false,
+      );
     } else {
       if (message.data["image"] == null && Platform.isAndroid) {
         localNotification.createNotification(
@@ -129,6 +137,14 @@ class NotificationService {
                 Platform.isAndroid) {
               localNotification.createSoundNotification(
                 title: message.notification?.title ?? '',
+                body: message.notification?.body ?? '',
+                notificationData: message,
+                isLocked: false,
+              );
+            } else if (message.data['type'] == "booking" && Platform.isAndroid) {
+              // Handle new booking notification with vibration
+              localNotification.createBookingNotification(
+                title: message.notification?.title ?? 'New Booking',
                 body: message.notification?.body ?? '',
                 notificationData: message,
                 isLocked: false,
