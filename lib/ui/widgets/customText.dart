@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../app/generalImports.dart';
 
 class CustomText extends StatelessWidget {
@@ -5,65 +7,72 @@ class CustomText extends StatelessWidget {
     this.text, {
     super.key,
     this.color,
-    this.showLineThrough,
     this.fontWeight,
     this.fontStyle,
     this.fontSize,
     this.textAlign,
     this.maxLines,
     this.height,
-    this.showUnderline,
-    this.underlineOrLineColor,
     this.letterSpacing,
+    this.showUnderline,
+    this.showLineThrough,
+    this.decorationColor,
+    this.underlineOrLineColor,
   });
 
   final String text;
+
+  // Text style
   final Color? color;
   final FontWeight? fontWeight;
   final FontStyle? fontStyle;
   final double? fontSize;
   final double? height;
-  final TextAlign? textAlign;
-  final int? maxLines;
-  final bool? showLineThrough;
-  final bool? showUnderline;
-  final Color? underlineOrLineColor;
   final double? letterSpacing;
 
-  TextStyle textStyle(BuildContext context) {
+  // Layout
+  final TextAlign? textAlign;
+  final int? maxLines;
+
+  // Decorations
+  final bool? showUnderline;
+  final bool? showLineThrough;
+  final Color? decorationColor;
+  final Color? underlineOrLineColor;
+
+  TextStyle _textStyle(BuildContext context) {
     return TextStyle(
-      color: color ?? context.colorScheme.blackColor,
+      color: color ?? Theme.of(context).colorScheme.onSurface,
       fontWeight: fontWeight ?? FontWeight.w400,
       fontStyle: fontStyle,
-      fontSize: fontSize,
-      decoration: showLineThrough ?? false
-          ? TextDecoration.lineThrough
-          : showUnderline ?? false
-          ? TextDecoration.underline
-          : null,
-      decorationColor: underlineOrLineColor,
-      height: height,
+      fontSize: fontSize ?? 14,
+      height: height ?? 1.4,
       letterSpacing: letterSpacing,
+      decoration: _decoration,
+      decorationColor: decorationColor,
     );
+  }
+
+  TextDecoration? get _decoration {
+    if (showLineThrough == true) {
+      return TextDecoration.lineThrough;
+    }
+    if (showUnderline == true) {
+      return TextDecoration.underline;
+    }
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    return maxLines != null
-        ? Text(
-            text,
-            maxLines: maxLines,
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
-            style: textStyle(context),
-            textAlign: textAlign,
-            textScaler: TextScaler.noScaling,
-          )
-        : Text(
-            text,
-            style: textStyle(context),
-            textAlign: textAlign,
-            textScaler: TextScaler.noScaling,
-          );
+    return Text(
+      text,
+      maxLines: maxLines,
+      softWrap: true,
+      overflow: maxLines != null ? TextOverflow.ellipsis : null,
+      textAlign: textAlign,
+      textScaler: TextScaler.noScaling,
+      style: _textStyle(context),
+    );
   }
 }

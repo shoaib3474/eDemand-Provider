@@ -1,63 +1,58 @@
 import 'package:flutter/material.dart';
-
 import 'generalImports.dart';
 
 enum AppTheme { dark, light }
 
-final commonThemeData = ThemeData(useMaterial3: true, fontFamily: 'Lexend');
+final commonThemeData = ThemeData(
+  useMaterial3: true,
+  fontFamily: 'Lexend',
+  visualDensity: VisualDensity.standard,
+);
 
 final Map<AppTheme, ThemeData> appThemeData = {
   AppTheme.light: commonThemeData.copyWith(
-    scaffoldBackgroundColor: AppColors.lightPrimaryColor,
     brightness: Brightness.light,
-    primaryColor: AppColors.lightPrimaryColor,
-    secondaryHeaderColor: AppColors.lightSubHeadingColor1,
-    textSelectionTheme: TextSelectionThemeData(
-      cursorColor: AppColors.lightAccentColor,
-      selectionHandleColor: AppColors.lightAccentColor,
-      selectionColor: AppColors.lightSecondaryColor,
+    scaffoldBackgroundColor: AppColors.lightPrimaryColor,
+    colorScheme: ColorScheme.light(
+      primary: AppColors.lightAccentColor,
+      secondary: AppColors.lightSecondaryColor,
+      surface: Colors.white,
+      onSurface: AppColors.lightSubHeadingColor1,
+      onPrimary: Colors.white,
     ),
-    timePickerTheme: TimePickerThemeData(
-      dialBackgroundColor: AppColors.lightAccentColor.withValues(alpha: 0.1),
-      backgroundColor: AppColors.lightPrimaryColor,
-      hourMinuteTextColor: AppColors.lightAccentColor,
-      hourMinuteColor: AppColors.lightAccentColor.withValues(alpha: 0.1),
-      cancelButtonStyle: ButtonStyle(
-        foregroundColor: WidgetStatePropertyAll(AppColors.lightAccentColor),
+    cardTheme: CardThemeData(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.white,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
       ),
-      confirmButtonStyle: ButtonStyle(
-        foregroundColor: WidgetStatePropertyAll(AppColors.lightAccentColor),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.symmetric(vertical: 14),
       ),
-      dayPeriodColor: AppColors.lightAccentColor,
-      dayPeriodTextColor: AppColors.lightSubHeadingColor1,
-      dialHandColor: AppColors.lightAccentColor,
     ),
   ),
+
   AppTheme.dark: commonThemeData.copyWith(
     brightness: Brightness.dark,
-    primaryColor: AppColors.darkPrimaryColor,
-    secondaryHeaderColor: AppColors.darkSubHeadingColor1,
     scaffoldBackgroundColor: AppColors.darkPrimaryColor,
-    textSelectionTheme: TextSelectionThemeData(
-      cursorColor: AppColors.darkAccentColor,
-      selectionHandleColor: AppColors.darkAccentColor,
-      selectionColor: AppColors.darkSecondaryColor,
+    colorScheme: ColorScheme.dark(
+      primary: AppColors.darkAccentColor,
+      secondary: AppColors.darkSecondaryColor,
+      surface: AppColors.darkPrimaryColor,
+      onSurface: AppColors.darkSubHeadingColor1,
     ),
-    timePickerTheme: TimePickerThemeData(
-      helpTextStyle: TextStyle(color: AppColors.darkSubHeadingColor1),
-      dialBackgroundColor: AppColors.darkAccentColor.withValues(alpha: 0.5),
-      backgroundColor: AppColors.darkPrimaryColor,
-      hourMinuteTextColor: AppColors.darkAccentColor,
-      hourMinuteColor: AppColors.darkPrimaryColor.withValues(alpha: 0.1),
-      cancelButtonStyle: ButtonStyle(
-        foregroundColor: WidgetStatePropertyAll(AppColors.darkAccentColor),
-      ),
-      confirmButtonStyle: ButtonStyle(
-        foregroundColor: WidgetStatePropertyAll(AppColors.darkAccentColor),
-      ),
-      dayPeriodColor: AppColors.darkAccentColor,
-      dayPeriodTextColor: AppColors.darkSubHeadingColor1,
-      dialHandColor: AppColors.darkAccentColor,
+    cardTheme: CardThemeData(
+      elevation: 1,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     ),
   ),
 };
