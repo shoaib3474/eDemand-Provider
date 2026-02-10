@@ -111,7 +111,7 @@ export '../data/repository/serviceRepository.dart';
 export '../data/repository/settingsRepository.dart';
 export '../data/repository/homeDataRepository.dart';
 export '../firebase_options.dart';
-export '../ui/screens/Withdrawal/withdrawalRequests.dart';
+export '../ui/screens/withdrawal/withdrawalRequests.dart';
 export '../ui/screens/appUpdateScreen.dart';
 export '../ui/screens/auth/countryCodePickerScreen.dart';
 export '../ui/screens/auth/createNewPassword.dart';
