@@ -58,6 +58,11 @@ class LocalAwesomeNotification {
         ledColor: Theme.of(context).colorScheme.lightGreyColor,
       ),
     ], channelGroups: []);
+
+    final bool isAllowed = await notification.isNotificationAllowed();
+    if (!isAllowed) {
+      await notification.requestPermissionToSendNotifications();
+    }
     await setupAwesomeNotificationListeners(context);
   }
 
@@ -219,7 +224,8 @@ class LocalAwesomeNotification {
       );
 
       // Trigger vibration pattern programmatically for additional feedback
-      if (await Vibration.hasVibrator() ?? false) {
+      if (await Vibration.hasVibrator() &&
+          await Vibration.hasCustomVibrationsSupport()) {
         await Vibration.vibrate(pattern: bookingVibrationPattern);
       }
     } catch (e) {
